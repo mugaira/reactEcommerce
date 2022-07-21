@@ -1,2 +1,0 @@
-# reactEcommerce
-MERN stack
