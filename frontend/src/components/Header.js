@@ -37,25 +37,26 @@ const Header = () => {
    </Heading>
    <Box
     display={{ base: "flex", md: "none" }}
-    onClick={() => {setShow(!show)}}
-
+    onClick={() => {
+     setShow(!show);
+    }}
    >
     <Icon
      as={HiOutlineMenu}
      color="whiteAlpha.700"
      w="6"
      h="6"
-     
      _hover={{ color: "whiteAlpha.800" }}
     />
    </Box>
 
-   <Box display={{base : show ? 'flex' : 'none' ,md : 'flex'}}
-   width={{base : "full" , md : "auto"}}
-   flexDirection = {{base : "column" , md:"auto"}}
-   mt={{base : '5', md :'auto'}}
-   justifyContent = {{base : "flex-end",md:"auto"}}>
-    
+   <Box
+    display={{ base: show ? "flex" : "none", md: "flex" }}
+    width={{ base: "full", md: "auto" }}
+    flexDirection={{ base: "column", md: "auto" }}
+    mt={{ base: "5", md: "auto" }}
+    justifyContent={{ base: "flex-end", md: "auto" }}
+   >
     <Link
      href="/cart"
      color="whiteAlpha.700"
