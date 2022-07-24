@@ -36,7 +36,7 @@ const Header = () => {
     </Link>
    </Heading>
    <Box
-    display={{ base: "flex", md: "none" }}
+    display={{ base: "block", md: "none" }}
     onClick={() => {
      setShow(!show);
     }}
@@ -51,11 +51,11 @@ const Header = () => {
    </Box>
 
    <Box
-    display={{ base: show ? "flex" : "none", md: "flex" }}
+    display={{ base: show ? "block" : "none", md: "flex" }}
     width={{ base: "full", md: "auto" }}
-    flexDirection={{ base: "column", md: "auto" }}
+    flexDirection={{ base: "row", md: "auto" }}
     mt={{ base: "5", md: "auto" }}
-    justifyContent={{ base: "flex-end", md: "auto" }}
+    alignItems={{ base: "flex-end", md: "auto" }}
    >
     <Link
      href="/cart"
