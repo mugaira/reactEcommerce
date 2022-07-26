@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Flex, Link, Heading, Box, Icon } from "@chakra-ui/react";
 import { HiShoppingBag, HiUser, HiOutlineMenu } from "react-icons/hi";
+import {Link as RouterLink} from 'react-router-dom';
 import React from "react";
 
 const Header = () => {
@@ -29,7 +30,8 @@ const Header = () => {
     letterSpacing="md"
    >
     <Link
-     href="/"
+    as={RouterLink}
+     to="/"
      _hover={{ color: "whiteAlpha.900", textDecoration: "none" }}
     >
      Rst Store
@@ -58,7 +60,8 @@ const Header = () => {
     alignItems={{ base: "flex-end", md: "auto" }}
    >
     <Link
-     href="/cart"
+    as={RouterLink}
+     to="/cart"
      color="whiteAlpha.700"
      letterSpacing="wide"
      fontSize="sm"
@@ -73,7 +76,8 @@ const Header = () => {
      Cart
     </Link>
     <Link
-     href="/cart"
+    as={RouterLink}
+     to="/cart"
      color="whiteAlpha.700"
      letterSpacing="wide"
      fontSize="sm"
