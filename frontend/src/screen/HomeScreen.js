@@ -12,9 +12,9 @@ const HomeScreen = () => {
   </Heading>
 
   <Grid templateColumns={{base:'1fr', md:'1fr 1fr' ,lg:'1fr 1fr 1fr 1fr'}}gap='8'>
-   {products.map((prod) => {
-    return <Product product={prod} />
-   })}
+   {products.map((prod) => (
+     <Product key={prod._id} product={prod} />
+   ))}
   </Grid>
   </div>
   

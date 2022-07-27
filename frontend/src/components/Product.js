@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 
 import React from "react";
-import Rating from "./Rating";
+import Rating from "../components/Rating";
 
 const Product = ({ product }) => {
   return (
@@ -31,7 +31,7 @@ const Product = ({ product }) => {
           </Heading>
           <Flex alignItems="center" justifyContent="space-between">
            <Rating value={product.rating} />
-            <Text fontSize="1.5xl" fontweight="bold" color="blue.200">
+            <Text fontSize="1.5xl" fontWeight="bold" color="blue.200">
               ₹{product.price}
             </Text>
           </Flex>

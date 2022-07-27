@@ -91,7 +91,7 @@ const products = [
    numReviews: 3,
  },
  {
-   _id: '7',
+   _id: '8',
    name: 'Printed Polo Collar T-shirt',
    image: '/images/female_img_4.jpg',
    description:
