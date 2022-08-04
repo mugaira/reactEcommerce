@@ -1,0 +1,22 @@
+{
+  "name": "reactecommerce",
+  "version": "1.0.0",
+  "description": "reactEcommerce ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mugaira/reactEcommerce.git"
+  },
+  "author": "Mugaira Inamdar",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/mugaira/reactEcommerce/issues"
+  },
+  "homepage": "https://github.com/mugaira/reactEcommerce#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
