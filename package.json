@@ -1,6 +1,7 @@
 {
   "name": "reactecommerce",
   "version": "1.0.0",
+  "type": "module",
   "description": "reactEcommerce ",
   "main": "server.js",
   "scripts": {
