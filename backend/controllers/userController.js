@@ -3,7 +3,7 @@ import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
 // @desc   Auth user & get token
-// @route  POST Api/user/login
+// @route  POST /api/user/login
 // @access public
 
 const authUser = asyncHandler(async (req, res) => {
@@ -26,7 +26,7 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 // @desc   Get user profile
-// @route  GET Api/user/profile
+// @route  GET /api/user/profile
 // @access private
 
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -45,4 +45,31 @@ const getUserProfile = asyncHandler(async (req, res) => {
  }
 });
 
-export { authUser, getUserProfile };
+// @desc   Register new user
+// @route  POST /api/users
+// @access public
+
+const registerUser = asyncHandler(async (req, res) => {
+ const { name, email, password } = req.body;
+
+ const userExists = await User.findOne({ email });
+
+ if (userExists) {
+  res.status(400); //Bad rrequest
+  throw new Error("user/email already exist");
+ }
+
+ const user = await User.create({ name, email, password });
+
+ if (user) {
+  res.status(200).json({
+   _id: user._id,
+   name: user.name,
+   email: user.email,
+   isAdmin: user.isAdmin,
+   token: generateToken(user._id),
+  });
+ }
+});
+
+export { authUser, getUserProfile, registerUser };
