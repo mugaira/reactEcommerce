@@ -6,6 +6,7 @@ import HomeScreen from "./screen/HomeScreen";
 import { Flex } from "@chakra-ui/react";
 import ProductScreen from "./screen/ProductScreen";
 import CartScreen from "./screen/CartScreen";
+import LoginScreen from "./screen/LoginScreen";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path='/product/:id'  element={<ProductScreen />} />
       <Route path='/cart/:id' element={<CartScreen />} />
       <Route path='/cart' element={<CartScreen />} />
+      <Route path='/login' element={<LoginScreen />} />
       </Routes>
       </Flex>
 

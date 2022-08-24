@@ -77,7 +77,7 @@ const Header = () => {
     </Link>
     <Link
     as={RouterLink}
-     to="/cart"
+     to="/login"
      color="whiteAlpha.700"
      letterSpacing="wide"
      fontSize="sm"
