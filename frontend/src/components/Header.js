@@ -1,12 +1,36 @@
 import { useState } from "react";
-import { Flex, Link, Heading, Box, Icon } from "@chakra-ui/react";
+import {
+ Box,
+ Button,
+ Flex,
+ Heading,
+ Icon,
+ Link,
+ Menu,
+ MenuButton,
+ MenuItem,
+ MenuList,
+} from '@chakra-ui/react';
 import { HiShoppingBag, HiUser, HiOutlineMenu } from "react-icons/hi";
-import {Link as RouterLink} from 'react-router-dom';
+import { IoChevronDown } from "react-icons/io5";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userActions";
 import React from "react";
 
 const Header = () => {
+ const dispatch = useDispatch();
+ const navigate = useNavigate();
+
  const [show, setShow] = useState(false);
- // console.log(show);
+
+ const userLogin = useSelector((state) => state.userLogin);
+ const { userInfo } = userLogin;
+
+ const logoutHandler = () => {
+  dispatch(logout());
+  navigate("/");
+ };
 
  return (
   <Flex
@@ -30,7 +54,7 @@ const Header = () => {
     letterSpacing="md"
    >
     <Link
-    as={RouterLink}
+     as={RouterLink}
      to="/"
      _hover={{ color: "whiteAlpha.900", textDecoration: "none" }}
     >
@@ -57,10 +81,10 @@ const Header = () => {
     width={{ base: "full", md: "auto" }}
     flexDirection={{ base: "row", md: "auto" }}
     mt={{ base: "5", md: "auto" }}
-    alignItems={{ base: "flex-end", md: "auto" }}
+    alignItems={{ base: "flex-end", md: "center" }}
    >
     <Link
-    as={RouterLink}
+     as={RouterLink}
      to="/cart"
      color="whiteAlpha.700"
      letterSpacing="wide"
@@ -75,22 +99,44 @@ const Header = () => {
      <Icon as={HiShoppingBag} w="4" h="4" mr="1" />
      Cart
     </Link>
-    <Link
-    as={RouterLink}
-     to="/login"
-     color="whiteAlpha.700"
-     letterSpacing="wide"
-     fontSize="sm"
-     fontWeight="bold"
-     textTransform="uppercase"
-     mr="5"
-     display="flex"
-     alignItems="center"
-     _hover={{ color: "whiteAlpha.800" }}
-    >
-     <Icon as={HiUser} w="4" h="4" mr="1" />
-     Login
-    </Link>
+    {userInfo ? (
+     <Menu>
+      <MenuButton
+       as={Button}
+       height='8'
+       rightIcon={<IoChevronDown />}
+       display="flex"
+       alignItems="center"
+       _hover={{ textDecor: "none", opacity: "0.7" }}
+      >
+       {userInfo.name}
+      </MenuButton>
+      <MenuList>
+       <MenuItem as={RouterLink} to="/profile">
+        Profile
+       </MenuItem>
+       <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+      </MenuList>
+     </Menu>
+    ) : (
+     <Link
+      as={RouterLink}
+      to="/login"
+      color="whiteAlpha.700"
+      letterSpacing="wide"
+      fontSize="sm"
+      fontWeight="bold"
+      textTransform="uppercase"
+      mr="5"
+      display="flex"
+      alignItems="center"
+      _hover={{ color: "whiteAlpha.800" }}
+     >
+      <Icon as={HiUser} w="4" h="4" mr="1" />
+      Login
+     </Link>
+    )}
+    ;
    </Box>
   </Flex>
  );
