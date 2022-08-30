@@ -8,6 +8,7 @@ import ProductScreen from "./screen/ProductScreen";
 import CartScreen from "./screen/CartScreen";
 import LoginScreen from "./screen/LoginScreen";
 import RegisterScreen from "./screen/RegisterScreen";
+import ProfileScreen from "./screen/ProfileScreen";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
+      <Route path='/profile' element={<ProfileScreen />} />
       </Routes>
       </Flex>
 
