@@ -10,11 +10,8 @@ import {
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
- Link as RouterLink,
- useNavigate,
-} from 'react-router-dom';
-import { getUserDetails } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
+import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 
@@ -33,6 +30,9 @@ const ProfileScreen = () => {
 
  const userLogin = useSelector((state) => state.userLogin);
  const { userInfo } = userLogin;
+
+ const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+ const { success } = userUpdateProfile;
 
  useEffect(() => {
   if (!userInfo) {
@@ -53,7 +53,7 @@ const ProfileScreen = () => {
   if (password !== confirmPassword) {
    setMessage('Password Does Not Match');
   } else {
-   //DISPATCH UPDATE PROFILE
+   dispatch(updateUserProfile({ id: user._id, name, email, password }));
   }
  };
 
@@ -80,6 +80,7 @@ const ProfileScreen = () => {
 
      {error && <Message type='error'>{error}</Message>}
      {message && <Message type='error'>{message}</Message>}
+     {success && <Message type='success'>Profile Updated!</Message>}
 
      <form onSubmit={submitHandler}>
       <FormControl id='name'>

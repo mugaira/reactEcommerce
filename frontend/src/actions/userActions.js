@@ -10,6 +10,8 @@ import {
 	USER_DETAILS_FAIL,
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_SUCCESS,
+	USER_UPDATE_PROFILE_REQUEST,
+	USER_UPDATE_PROFILE_SUCCESS,
 } from '../constants/userConstants';
 
 export const login = (email, password) => async (dispatch) => {
@@ -84,7 +86,7 @@ export const getUserDetails = () => async (dispatch, getState) => {
 		dispatch({ type: USER_DETAILS_REQUEST });
 
 		const {
-			userLogin: { userInfo },
+			userLogin: { userInfo }, //multi-level destructing
 		} = getState();
 
 		const config = {
@@ -96,6 +98,35 @@ export const getUserDetails = () => async (dispatch, getState) => {
 		const { data } = await axios.get('/api/user/profile', config);
 
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+	} catch (err) {
+		dispatch({
+			type: USER_DETAILS_FAIL,
+			payload:
+				err.response && err.response.data.message
+					? err.response.data.message
+					: err.response,
+		});
+	}
+};
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+
+		const {
+			userLogin: { userInfo }, // 2-level destructing
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+				'Content-Type': 'application/json',
+			},
+		};
+
+		const { data } = await axios.put('/api/user/profile',user, config);
+
+		dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
 	} catch (err) {
 		dispatch({
 			type: USER_DETAILS_FAIL,
