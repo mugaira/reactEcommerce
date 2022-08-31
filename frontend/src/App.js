@@ -9,10 +9,11 @@ import CartScreen from "./screen/CartScreen";
 import LoginScreen from "./screen/LoginScreen";
 import RegisterScreen from "./screen/RegisterScreen";
 import ProfileScreen from "./screen/ProfileScreen";
+import ShippingScreen from "./screen/ShippingScreen";
 
 const App = () => {
   return (
-   
+
     <BrowserRouter>
       <Header />
       <Flex
@@ -24,19 +25,20 @@ const App = () => {
         bgColor="gray.200"
       >
         <Routes>
-      <Route path='/' element = {<HomeScreen />} />
-      <Route path='/product/:id'  element={<ProductScreen />} />
-      <Route path='/cart/:id' element={<CartScreen />} />
-      <Route path='/cart' element={<CartScreen />} />
-      <Route path='/login' element={<LoginScreen />} />
-      <Route path='/register' element={<RegisterScreen />} />
-      <Route path='/profile' element={<ProfileScreen />} />
-      </Routes>
+          <Route path='/' element={<HomeScreen />} />
+          <Route path='/product/:id' element={<ProductScreen />} />
+          <Route path='/cart/:id' element={<CartScreen />} />
+          <Route path='/cart' element={<CartScreen />} />
+          <Route path='/login' element={<LoginScreen />} />
+          <Route path='/register' element={<RegisterScreen />} />
+          <Route path='/profile' element={<ProfileScreen />} />
+          <Route path='/shipping' element={<ShippingScreen />} />
+        </Routes>
       </Flex>
 
       <Footer />
-      </BrowserRouter>
-    
+    </BrowserRouter>
+
   );
 };
 
