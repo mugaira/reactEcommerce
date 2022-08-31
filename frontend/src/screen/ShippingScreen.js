@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveShippingAddress } from '../actions/cartActions';
 import FormContainer from '../components/FormContainer';
+import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingScreen = () => {
  const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const ShippingScreen = () => {
    py='5'
   >
    <FormContainer>
+    <CheckoutSteps step1 step2 />
     <Heading
      as='h2'
      mb='8'
