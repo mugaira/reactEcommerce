@@ -8,12 +8,17 @@ import {
  Link,
  Text,
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { createOrder } from '../actions/orderAction';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 
 const PlaceOrderScreen = () => {
+ const dispatch = useDispatch();
+ const navigate = useNavigate();
+
  const cart = useSelector((state) => state.cart);
 
  cart.itemsPrice = cart.cartItems.reduce(
@@ -25,9 +30,27 @@ const PlaceOrderScreen = () => {
  cart.taxPrice = (18 * cart.itemsPrice) / 100;
  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
+ const orderCreate = useSelector((state) => state.orderCreate);
+ const { success, error, order } = orderCreate;
+
  const placeOrderHandler = () => {
-  console.log('place Order');
+  dispatch(
+   createOrder({
+    orderItems: cart.cartItems,
+    shippingAddress: cart.shippingAddress,
+    paymentMethod: cart.paymentMethod,
+    itemsPrice: cart.itemsPrice,
+    shippingPrice: cart.shippingPrice,
+    taxPrice: cart.taxPrice,
+    totalPrice: cart.totalPrice,
+   })
+  );
  };
+ useEffect(() => {
+  if (success) {
+   navigate(`/order/${order._id}`);
+  }
+ }, [success, navigate, order]);
 
  return (
   <Flex
@@ -53,6 +76,7 @@ const PlaceOrderScreen = () => {
       py='6'
       borderColor='gray.400'
      >
+      {error && <Message type='error'>{error}</Message>}
       <Heading
        as='h2'
        mb='3'
