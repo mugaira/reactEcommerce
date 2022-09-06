@@ -12,6 +12,7 @@ import ProfileScreen from "./screen/ProfileScreen";
 import ShippingScreen from "./screen/ShippingScreen";
 import PaymentScreen from "./screen/PaymentScreen";
 import PlaceOrderScreen from "./screen/PlaceOrderScreen";
+import OrderScreen from "./screen/OrderScreen";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
           <Route path='/shipping' element={<ShippingScreen />} />
           <Route path='/payment' element={<PaymentScreen />} />
           <Route path='/placeorder' element={<PlaceOrderScreen />} />
+          <Route path='/order/:id' element={<OrderScreen />} />
         </Routes>
       </Flex>
 

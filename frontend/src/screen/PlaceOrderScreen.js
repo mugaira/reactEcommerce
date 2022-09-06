@@ -155,7 +155,7 @@ const PlaceOrderScreen = () => {
              as={RouterLink}
              to={`/product/${item.product}`}
             >
-             {item.name}
+             {item.name}&nbsp;
             </Link>
            </Flex>
 
@@ -253,7 +253,7 @@ const PlaceOrderScreen = () => {
        alignItems='center'
        justifyContent='space-between'
       >
-       <Text fontSize='xl'>Tax Price</Text>
+       <Text fontSize='xl'>Total Price</Text>
        <Text
         fontWeight='bold'
         fontSize='xl'
