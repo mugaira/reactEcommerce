@@ -5,15 +5,25 @@ import {
  FormLabel,
  Grid,
  Heading,
+ Icon,
  Input,
  Spacer,
+ Table,
+ Tbody,
+ Td,
+ Th,
+ Thead,
+ Tr,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
+import Loader from '../components/Loader';
+import { IoWarning } from 'react-icons/io5';
+import { listMyOrder } from '../actions/orderAction';
 
 const ProfileScreen = () => {
  const dispatch = useDispatch();
@@ -34,12 +44,17 @@ const ProfileScreen = () => {
  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
  const { success } = userUpdateProfile;
 
+ const orderMyList = useSelector((state) => state.orderMyList);
+ const { loading: loadingOrders, error: errorOrders,orders } = orderMyList;
+ console.log(orders);
+
  useEffect(() => {
   if (!userInfo) {
    navigate('/login');
   } else {
    if (!user.name) {
     dispatch(getUserDetails());
+    dispatch(listMyOrder());
    } else {
     setName(user.name);
     setEmail(user.email);
@@ -49,7 +64,6 @@ const ProfileScreen = () => {
 
  const submitHandler = (e) => {
   e.preventDefault();
-  
 
   if (password !== confirmPassword) {
    setMessage('Password Does Not Match');
@@ -144,6 +158,65 @@ const ProfileScreen = () => {
       </Button>
      </form>
     </FormContainer>
+   </Flex>
+
+   {/* Orders */}
+
+   <Flex direction='column'>
+    <Heading
+     as='h2'
+     mb='4'
+    >
+     My Orders
+    </Heading>
+
+    {loadingOrders ? (
+     <Loader />
+    ) : errorOrders ? (
+     <Message type='error'>{error}</Message>
+    ) : (
+     <Table variant='striped'>
+      <Thead>
+       <Tr>
+        <Th>ID</Th>
+        <Th>DATE</Th>
+        <Th>TOTAL</Th>
+        <Th>PAID</Th>
+        <Th>DELIVERED</Th>
+        <Th></Th>
+       </Tr>
+      </Thead>
+      <Tbody>
+       {orders.map((order) => (
+        <Tr key={order._id}>
+         <Td>{order._id}</Td>
+         <Td>{order.createdAt.substring(0, 10)}</Td>
+         <Td>{order.totalPrice}</Td>
+         <Td>
+          {order.isPaid ? (
+           order.paidAt.substring(0, 10)
+          ) : (
+           <Icon
+            as={IoWarning}
+            color='red'
+           />
+          )}
+         </Td>
+         <Td>
+          <Button
+           as={RouterLink}
+           to={`/order/${order._id}`}
+           colorScheme='teal'
+           size='sm'
+          >
+           Details
+          </Button>
+         </Td>
+        </Tr>
+       ))}
+      </Tbody>
+     </Table>
+    )}
    </Flex>
   </Grid>
  );
