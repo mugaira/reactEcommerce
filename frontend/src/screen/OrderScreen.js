@@ -7,9 +7,11 @@ import {
 	useSearchParams,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails } from '../actions/orderAction';
+import { getOrderDetails, payOrder } from '../actions/orderAction';
+import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 const OrderScreen = () => {
 	const dispatch = useDispatch();
@@ -17,6 +19,9 @@ const OrderScreen = () => {
 
 	const orderDetails = useSelector((state) => state.orderDetails);
 	const { loading, error, order } = orderDetails;
+
+	const orderPay = useSelector((state) => state.orderPay);
+	const { loading: loadingPay, success: successPay } = orderPay;
 
 	if (!loading) {
 		order.itemsPrice = order.orderItems.reduce(
@@ -26,8 +31,17 @@ const OrderScreen = () => {
 	}
 
 	useEffect(() => {
-		dispatch(getOrderDetails(orderId));
-	}, [orderId, dispatch]);
+		dispatch({ type :ORDER_PAY_RESET });
+
+		if (!order || successPay) {
+			dispatch({ type: ORDER_PAY_RESET });
+			dispatch(getOrderDetails(orderId));
+		}
+	}, [orderId, dispatch, successPay, order]);
+
+	const successPaymentHandler = (paymentResult) => {
+		dispatch(payOrder(orderId, paymentResult));
+	};
 
 	return loading ? (
 		<Loader />
@@ -103,6 +117,13 @@ const OrderScreen = () => {
 								<strong>Method: </strong>
 								{order.paymentMethod.toUpperCase()}
 							</Text>
+							{order.isPaid ? (
+								<Message type='success'>
+									Paid on {order.paidAt.split('T')[0]}
+								</Message>
+							) : (
+								<Message type='warning'>Not Paid</Message>
+							)}
 						</Box>
 
 						{/* Order Items */}
@@ -150,15 +171,13 @@ const OrderScreen = () => {
 													>
 														{item.name}&nbsp;
 													</Link>
-													</Flex>
-													<Text
-														fontSize='lg'
-														fontWeight='semibold'
-													>
-														{item.qty} x ₹{item.price} = ₹
-														{item.qty * item.price}
-													</Text>
-												
+												</Flex>
+												<Text
+													fontSize='lg'
+													fontWeight='semibold'
+												>
+													{item.qty} x ₹{item.price} = ₹{item.qty * item.price}
+												</Text>
 											</Flex>
 										))}
 									</Box>
@@ -259,6 +278,46 @@ const OrderScreen = () => {
 						</Box>
 
 						{/* PAYMENT BUTTON */}
+						{!order.isPaid && (
+							<Box>
+								{loadingPay ? (
+									<Loader />
+								) : (
+									<PayPalScriptProvider
+										options={{
+											'client-id':
+												'AeBjA7Slqkz6R6Ekz7k4px7gVqj62I3app2tV9m2ZpJ8N9gLYBVFdXVU6ROu9Xl3VYLTybSU2bjfL6qv',
+											components: 'buttons',
+										}}
+									>
+										<PayPalButtons
+											createOrder={(_, actions) => {
+												return actions.order.create({
+													purchase_units: [
+														{
+															amount: {
+																value: order.totalPrice,
+															},
+														},
+													],
+												});
+											}}
+											onApprove={(_, actions) => {
+												return actions.order.capture().then((details) => {
+													const paymentResult = {
+														id: details.id,
+														status: details.status,
+														update_time: details.update_time,
+														email_address: details.email_address,
+													};
+													successPaymentHandler(paymentResult);
+												});
+											}}
+										/>
+									</PayPalScriptProvider>
+								)}
+							</Box>
+						)}
 					</Flex>
 				</Grid>
 			</Flex>
