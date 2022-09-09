@@ -46,7 +46,6 @@ const ProfileScreen = () => {
 
  const orderMyList = useSelector((state) => state.orderMyList);
  const { loading: loadingOrders, error: errorOrders,orders } = orderMyList;
- console.log(orders);
 
  useEffect(() => {
   if (!userInfo) {

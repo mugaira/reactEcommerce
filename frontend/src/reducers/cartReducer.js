@@ -1,5 +1,6 @@
 import {
 	CART_ADD_ITEM,
+	CART_ITEM_RESET,
 	CART_REMOVE_ITEM,
 	CART_SAVE_PAYMENT_METHOD,
 	CART_SAVE_SHIPPING_ADDRESS,
@@ -31,6 +32,9 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
 				...state,
 				cartItems: state.cartItems.filter((i) => i.product !== action.payload),
 			};
+
+		case CART_ITEM_RESET:
+			return { cartItems: [] };
 
 		case CART_SAVE_SHIPPING_ADDRESS:
 			return { ...state, shippingAddress: action.payload };
