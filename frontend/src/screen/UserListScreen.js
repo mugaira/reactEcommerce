@@ -18,7 +18,7 @@ import {
  IoTrashBinSharp,
 } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { listUsers } from '../actions/userActions';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -26,15 +26,24 @@ import { useEffect } from 'react';
 
 const UserListScreen = () => {
  const dispatch = useDispatch();
+ const navigate = useNavigate();
 
  const userList = useSelector((state) => state.userList);
  const { loading, users, error } = userList;
- console.log(users);
+
+ const userLogin = useSelector((state) => state.userLogin);
+ const { userInfo } = userLogin;
+
 
  useEffect(() => {
-  dispatch(listUsers());
- }, [dispatch]);
- console.log('i reached here');
+  if (userInfo && userInfo.isAdmin) {
+   dispatch(listUsers());
+  }
+  else {
+   navigate('/login')
+  }
+ }, [dispatch, userInfo, navigate]);
+
 
  const deleteHandler = () => {
   console.log('DELETE');
