@@ -101,6 +101,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
  }
 });
 
+// @desc   Get all users
+// @route  put /api/users
+// @access private/admin
+
 const getUsers = asyncHandler(async (req, res) => {
  const user = await User.find({});
  res.json(user);
