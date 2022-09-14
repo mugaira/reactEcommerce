@@ -14,7 +14,7 @@ import {
 import { useEffect } from 'react';
 import { IoAdd, IoPencilSharp, IoTrashBinSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../actions/productActions';
+import { deleteProduct, listProducts } from '../actions/productActions';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -29,16 +29,25 @@ const ProductListScreen = () => {
  const userLogin = useSelector((state) => state.userLogin);
  const { userInfo } = userLogin;
 
+ const productDelete = useSelector((state) => state.productDelete);
+ const {
+  loading: loadingDelete,
+  error: errorDelete,
+  success: successDelete,
+ } = productDelete;
+
  useEffect(() => {
   if (userInfo && userInfo.isAdmin) {
    dispatch(listProducts());
   } else {
    navigate('/login');
   }
- }, [userInfo, dispatch, navigate]);
+ }, [userInfo, dispatch, navigate, successDelete]);
 
- const deleteHandler = () => {
-  // DELETE PRODUCT
+ const deleteHandler = (id) => {
+  if (window.confirm('Are you sure')) {
+   dispatch(deleteProduct(id));
+  }
  };
 
  const createProductHandler = () => {
@@ -72,6 +81,9 @@ const ProductListScreen = () => {
      Create Product
     </Button>
    </Flex>
+
+   {loadingDelete && <Loader />}
+   {errorDelete && <Message type='error'>{error}</Message>}
 
    {loading ? (
     <Loader />
@@ -126,15 +138,14 @@ const ProductListScreen = () => {
             />
            </Button>
            <Button
-            justifyContent='flex-end'
-            alignItems='center'
+            mr='4'
             colorScheme='red'
+            onClick={() => deleteHandler(product._id)}
            >
             <Icon
              as={IoTrashBinSharp}
              color='white'
              size='sm'
-             onClick={deleteHandler}
             />
            </Button>
           </Flex>
