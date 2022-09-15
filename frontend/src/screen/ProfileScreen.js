@@ -18,7 +18,7 @@ import {
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { getUserDetails, updateUserProfile } from '../actions/userActions';
+import { getUserProfile, updateUserProfile } from '../actions/userActions';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
@@ -35,8 +35,8 @@ const ProfileScreen = () => {
  const [confirmPassword, setconfirmPassword] = useState('');
  const [message, setMessage] = useState('');
 
- const userDetails = useSelector((state) => state.userDetails);
- const { loading, error, user } = userDetails;
+ const userProfile = useSelector((state) => state.userProfile);
+ const { loading, error, user } = userProfile;
 
  const userLogin = useSelector((state) => state.userLogin);
  const { userInfo } = userLogin;
@@ -52,7 +52,7 @@ const ProfileScreen = () => {
    navigate('/login');
   } else {
    if (!user.name) {
-    dispatch(getUserDetails());
+    dispatch(getUserProfile());
     dispatch(listMyOrder());
    } else {
     setName(user.name);
@@ -79,7 +79,7 @@ const ProfileScreen = () => {
   >
    <Flex
     w='full'
-    alignItems='center'
+    alignItems='flex-start'
     justifyContent='center'
     py='5'
    >

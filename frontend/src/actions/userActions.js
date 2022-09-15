@@ -26,6 +26,10 @@ import {
 	USER_UPDATE_REQUEST,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_FAIL,
+	USER_PROFILE_REQUEST,
+	USER_PROFILE_SUCCESS,
+	USER_PROFILE_FAIL,
+	USER_PROFILE_RESET,
 } from '../constants/userConstants';
 
 export const login = (email, password) => async (dispatch) => {
@@ -64,6 +68,7 @@ export const logout = () => async (dispatch) => {
 	dispatch({ type: USER_LOGOUT });
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: ORDER_MY_LIST_RESET })
+	dispatch({ type: USER_PROFILE_RESET });
 	dispatch({ type: USER_UPDATE_PROFILE_RESET })
 	dispatch({ type: USER_LIST_RESET });
 };
@@ -99,6 +104,7 @@ export const register = (name, email, password) => async (dispatch) => {
 	}
 };
 
+
 export const getUserDetails = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: USER_DETAILS_REQUEST });
@@ -115,8 +121,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
 		const { data } = await axios.get(`/api/user/${id}`, config);
 
-		console.log(data);
-
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 	} catch (err) {
 		dispatch({
@@ -128,6 +132,32 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 		});
 	}
 };
+
+export const getUserProfile = () => async (dispatch, getState) => {
+	try {
+		dispatch({ type: USER_PROFILE_REQUEST });
+
+		const { userLogin: { userInfo } } = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`
+			}
+		}
+
+		const { data } = await axios.get('/api/user/profile', config);
+
+		dispatch({ type: USER_PROFILE_SUCCESS, payload: data });
+	} catch (err) {
+		dispatch({
+			type: USER_PROFILE_FAIL,
+			payload:
+				err.response && err.response.data.message
+					? err.response.data.message
+					: err.response,
+		});
+	}
+}
 
 export const updateUserProfile = (user) => async (dispatch, getState) => {
 	try {
