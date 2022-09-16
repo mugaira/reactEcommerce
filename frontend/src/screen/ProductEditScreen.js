@@ -1,20 +1,19 @@
 import { Button, Flex, FormControl, FormLabel, Heading, Input, Link, Spacer } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import { listProductDetails } from '../actions/productActions';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
+import { listProductDetails, updateProduct } from '../actions/productActions';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 const ProductEditScreen = () => {
 
  const dispatch = useDispatch();
+ const navigate = useNavigate();
 
  const { id: productId } = useParams();
-
- const productDetails = useSelector((state) => state.productDetails);
- const { loading, error, product } = productDetails;
 
  const [name, setName] = useState('');
  const [price, setPrice] = useState(0);
@@ -22,25 +21,38 @@ const ProductEditScreen = () => {
  const [brand, setBrand] = useState('');
  const [category, setCategory] = useState('');
  const [description, setDescription] = useState('');
- const [countInStock, setCountInStock] = useState(0);
+ const [countInStock, setCountInStock] = useState('');
+
+ const productDetails = useSelector((state) => state.productDetails);
+ const { loading, error, product } = productDetails;
+
+ const productUpdate = useSelector((state) => state.productUpdate);
+ const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
 
  useEffect(() => {
-  if (!product.name || product._id !== productId) {
-   dispatch(listProductDetails(productId));
+  if (successUpdate) {
+   dispatch({ type: PRODUCT_UPDATE_RESET });
+   navigate('/admin/productlist')
   }
   else {
-   setName(product.name);
-   setPrice(product.price);
-   setImage(product.image);
-   setBrand(product.brand);
-   setCategory(product.category);
-   setDescription(product.description);
-   setCountInStock(product.countInStock);
+   if (!product.name || product._id !== productId) {
+    dispatch(listProductDetails(productId));
+   }
+   else {
+    setName(product.name);
+    setPrice(product.price);
+    setImage(product.image);
+    setBrand(product.brand);
+    setCategory(product.category);
+    setDescription(product.description);
+    setCountInStock(product.countInStock);
+   }
   }
- }, [product, dispatch, productId]);
+ }, [product, dispatch, productId, successUpdate, navigate]);
 
- const submitHandler = () => {
-  //UPDATE PRODUCT
+ const submitHandler = (e) => {
+  e.preventDefault();
+  dispatch(updateProduct({ _id: productId, name, price, brand, category, description, countInStock, image }))
  }
 
  return (
@@ -55,12 +67,16 @@ const ProductEditScreen = () => {
       Edit Product
      </Heading>
 
+     {loadingUpdate && <Loader />}
+     {errorUpdate && <Message type='error' >{error}</Message>}
+
      {loading ? (
       <Loader />
      ) : error ? (
       <Message type='error'>{error}</Message>
      ) : (
       <form onSubmit={submitHandler}>
+
        {/* Name */}
        <FormControl id='name' isRequired>
         <FormLabel>Name: </FormLabel>
