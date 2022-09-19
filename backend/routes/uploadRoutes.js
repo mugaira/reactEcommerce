@@ -5,13 +5,13 @@ import path from 'path';
 const router = express.Router();
 
 const storage = multer.diskStorage({
- destination(req, file, cd) {
+ destination(req, file, cb) {
   cb(null, 'uploads');
  },
  filename(req, file, cb) {
   cb(
    null,
-   `${file.fieldname}-${Date.now()}.${path.extname(file.originalname)}`
+   `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
   );
  },
 });

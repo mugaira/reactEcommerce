@@ -1,4 +1,5 @@
 import colors from "colors";
+import path from 'path';
 import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
@@ -26,8 +27,11 @@ app.use('/api/user', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/uploads',uploadRoutes);
 
-//Error Middleware
+//create static folder
+const __dirname = path.resolve();
+app.use('/uploads',express.static(path.join(__dirname,'/uploads')));
 
+//Error Middleware
 app.use(notFound);
 app.use(errorHandler);
 
