@@ -17,6 +17,7 @@ import UserListScreen from './screen/UserListScreen';
 import UserEditScreen from "./screen/UserEditScreen";
 import ProductListScreen from "./screen/ProductListScreen";
 import ProductEditScreen from "./screen/ProductEditScreen";
+import OrderListScreen from "./screen/OrderListScreen";
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
           <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
           <Route path="/admin/productlist" element={< ProductListScreen />} />
           <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
+          <Route path='/admin/orderlist' element={<OrderListScreen />} />
         </Routes>
       </Flex>
 
