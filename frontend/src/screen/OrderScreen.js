@@ -1,17 +1,32 @@
-import { Box, Flex, Grid, Heading, Image, Link, Text } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Flex,
+	Grid,
+	Heading,
+	Image,
+	Link,
+	Text,
+} from '@chakra-ui/react';
 import { useEffect } from 'react';
 import {
 	useParams,
-	useNavigate,
 	Link as RouterLink,
-	useSearchParams,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails, payOrder } from '../actions/orderAction';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import {
+	getOrderDetails,
+	payOrder,
+	deliverOrder,
+} from '../actions/orderAction';
+import {
+	ORDER_PAY_RESET,
+	ORDER_DELIVER_RESET,
+	ORDER_DETAILS_RESET,
+} from '../constants/orderConstants';
 
 const OrderScreen = () => {
 	const dispatch = useDispatch();
@@ -19,9 +34,16 @@ const OrderScreen = () => {
 
 	const orderDetails = useSelector((state) => state.orderDetails);
 	const { loading, error, order } = orderDetails;
+	console.log(order);
 
 	const orderPay = useSelector((state) => state.orderPay);
 	const { loading: loadingPay, success: successPay } = orderPay;
+
+	const orderDeliver = useSelector((state) => state.orderDeliver);
+	const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
 
 	if (!loading) {
 		order.itemsPrice = order.orderItems.reduce(
@@ -31,17 +53,22 @@ const OrderScreen = () => {
 	}
 
 	useEffect(() => {
-		dispatch({ type :ORDER_PAY_RESET });
+		dispatch({ type: ORDER_PAY_RESET });
+		dispatch({ type: ORDER_DELIVER_RESET });
 
-		if (!order || successPay) {
+		if (!order || successPay || order._id !== orderId) {
 			dispatch({ type: ORDER_PAY_RESET });
+			dispatch({ type: ORDER_DELIVER_RESET });
+			dispatch({ type:ORDER_DETAILS_RESET});
 			dispatch(getOrderDetails(orderId));
 		}
-	}, [orderId, dispatch, successPay, order]);
+	}, [orderId, dispatch, successPay, order, successDeliver]);
 
 	const successPaymentHandler = (paymentResult) => {
 		dispatch(payOrder(orderId, paymentResult));
 	};
+
+	const deliverHandler = () => dispatch(deliverOrder(order));
 
 	return loading ? (
 		<Loader />
@@ -91,7 +118,7 @@ const OrderScreen = () => {
 							<Text mt='4'>
 								{order.isDelivered ? (
 									<Message type='success'>
-										Delivered on {order.deliveredAt}
+										Delivered on {order.deliveredAt.split('T')[0]}
 									</Message>
 								) : (
 									<Message type='warning'>Not Delivered</Message>
@@ -278,7 +305,9 @@ const OrderScreen = () => {
 						</Box>
 
 						{/* PAYMENT BUTTON */}
-						{!order.isPaid && (
+
+						
+						{!order.isPaid && !userInfo.isAdmin && (
 							<Box>
 								{loadingPay ? (
 									<Loader />
@@ -318,6 +347,21 @@ const OrderScreen = () => {
 								)}
 							</Box>
 						)}
+
+						{/* Order Delivery Botton */}
+						{loadingDeliver && <Loader />}
+						{order.isPaid &&
+							userInfo &&
+							userInfo.isAdmin &&
+							!order.isDelivered && (
+								<Button
+									type='button'
+									colorScheme='teal'
+									onClick={deliverHandler}
+								>
+									Mark as delivered
+								</Button>
+							)}
 					</Flex>
 				</Grid>
 			</Flex>
