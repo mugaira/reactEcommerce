@@ -58,6 +58,7 @@ const createProduct = asyncHandler(async (req, res) => {
   countInStock: 0,
   numReview: 0,
   description: 'Sample Description',
+  isFeatured : false,
  });
 
  const createdProduct = await product.save();
@@ -69,7 +70,7 @@ const createProduct = asyncHandler(async (req, res) => {
 // @access private/admin
 
 const updateProduct = asyncHandler(async (req, res) => {
- const { name, price, image, brand, category, countInStock, description } =
+ const { name, price, image, brand, category, countInStock, description, isFeatured } =
   req.body;
 
  const product = await Product.findById(req.params.id);
@@ -82,6 +83,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   product.category = category;
   product.countInStock = countInStock;
   product.description = description;
+  product.isFeatured = isFeatured;
 
   const updatedProduct = await product.save();
 

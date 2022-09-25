@@ -1,5 +1,6 @@
 import {
  Button,
+ Checkbox,
  Flex,
  FormControl,
  FormLabel,
@@ -31,6 +32,8 @@ const ProductEditScreen = () => {
  const [category, setCategory] = useState('');
  const [description, setDescription] = useState('');
  const [countInStock, setCountInStock] = useState('');
+ const [isFeatured, setIsFeatured] = useState(false);
+
 
  const productDetails = useSelector((state) => state.productDetails);
  const { loading, error, product } = productDetails;
@@ -75,6 +78,7 @@ const ProductEditScreen = () => {
     setCategory(product.category);
     setDescription(product.description);
     setCountInStock(product.countInStock);
+    setIsFeatured(product.isFeatured);
    }
   }
  }, [product, dispatch, productId, successUpdate, navigate]);
@@ -91,8 +95,10 @@ const ProductEditScreen = () => {
     description,
     countInStock,
     image,
+    isFeatured,
    })
   );
+  console.log(isFeatured);
  };
 
  return (
@@ -161,7 +167,6 @@ const ProductEditScreen = () => {
        {/* Image */}
        <FormControl
         id='image'
-        isRequired
        >
         <FormLabel>Image:</FormLabel>
         <Input
@@ -237,6 +242,19 @@ const ProductEditScreen = () => {
         />
        </FormControl>
        <Spacer h='3' />
+
+       {/* Is Featured */}
+       <FormControl id='isFeatured'>
+        <FormLabel>isFeatured</FormLabel>
+        <Checkbox
+         size='lg'
+         colorScheme='teal'
+         value={isFeatured}
+         onChange={() => setIsFeatured(!isFeatured)}
+        />
+        Is Featured?
+       </FormControl>
+      
 
        <Button
         type='submit'

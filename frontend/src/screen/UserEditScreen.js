@@ -113,7 +113,7 @@ const UserEditScreen = () => {
          type='email'
          placeholder='username@domain.com'
          value={email}
-         onChange={(e) => setEmail(e.currentTarget.value)}
+         onChange={(e) => setEmail(e.target.value)}
         />
        </FormControl>
        <Spacer h='3' />
