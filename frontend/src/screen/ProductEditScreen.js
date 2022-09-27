@@ -7,6 +7,7 @@ import {
  Heading,
  Input,
  Link,
+ Select,
  Spacer,
 } from '@chakra-ui/react';
 import axios from 'axios';
@@ -33,7 +34,6 @@ const ProductEditScreen = () => {
  const [description, setDescription] = useState('');
  const [countInStock, setCountInStock] = useState('');
  const [isFeatured, setIsFeatured] = useState(false);
-
 
  const productDetails = useSelector((state) => state.productDetails);
  const { loading, error, product } = productDetails;
@@ -165,9 +165,7 @@ const ProductEditScreen = () => {
        <Spacer h='3' />
 
        {/* Image */}
-       <FormControl
-        id='image'
-       >
+       <FormControl id='image'>
         <FormLabel>Image:</FormLabel>
         <Input
          type='text'
@@ -218,14 +216,16 @@ const ProductEditScreen = () => {
         id='category'
         isRequired
        >
-        <FormLabel>Category:</FormLabel>
-        <Input
-         type='text'
-         placeholder='Enter Category'
+        <FormLabel>Category</FormLabel>
+        <Select
          value={category}
          onChange={(e) => setCategory(e.target.value)}
-        />
+        >
+         <option value='men'>Men</option>
+         <option value='women'>Women</option>
+        </Select>
        </FormControl>
+
        <Spacer h='3' />
 
        {/* Count In Stock */}
@@ -254,7 +254,6 @@ const ProductEditScreen = () => {
         />
         Is Featured?
        </FormControl>
-      
 
        <Button
         type='submit'
