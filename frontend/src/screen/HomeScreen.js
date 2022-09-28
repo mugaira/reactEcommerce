@@ -1,5 +1,5 @@
 import { Heading, Flex, Grid, Box } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Product from '../components/Product';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../actions/productActions';
@@ -12,16 +12,14 @@ import HomeBannerTwo from '../components/BannerTwo';
 const HomeScreen = () => {
 	const dispatch = useDispatch();
 
-	const [featuredProducts, setFeaturedProducts] = useState([])
-
 	const productList = useSelector((state) => state.productList);
-	const { loading, error, products } = productList;
+	let { loading, error, products } = productList;
 
 	useEffect(() => {
 		dispatch(listProducts());
-		setFeaturedProducts(products.filter((product) => (product.isFeatured) ? product : ''));
+	}, [dispatch]);
 
-	}, [dispatch, setFeaturedProducts]);
+	products = products.filter((product) => (product.isFeatured) ? product : '');
 
 	return (
 		<>
@@ -57,7 +55,7 @@ const HomeScreen = () => {
 						}}
 						gap='8'
 					>
-						{featuredProducts.map((prod) => (
+						{products.map((prod) => (
 							<Product
 								key={prod._id}
 								product={prod}

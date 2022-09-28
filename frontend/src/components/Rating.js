@@ -19,7 +19,7 @@ const Rating = ({value,text ,color = "red.500"}) => {
        <Icon color={color}
        as = {value >= 5 ? IoStar : value >= 4.5 ? IoStarHalf : IoStarOutline} />
        </Box>
-       <Text >{text} Reviews</Text>
+       {/* <Text >{text} Reviews</Text> */}
       </Flex>
     
   )

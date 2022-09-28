@@ -9,6 +9,7 @@ import {
  Link,
  Select,
  Spacer,
+ Textarea,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -98,7 +99,6 @@ const ProductEditScreen = () => {
     isFeatured,
    })
   );
-  console.log(isFeatured);
  };
 
  return (
@@ -202,22 +202,23 @@ const ProductEditScreen = () => {
         isRequired
        >
         <FormLabel>Description:</FormLabel>
-        <Input
+        <Textarea
          type='text'
          placeholder='Enter Description'
          value={description}
          onChange={(e) => setDescription(e.target.value)}
-        />
+        ></Textarea>
        </FormControl>
        <Spacer h='3' />
 
        {/* Category */}
        <FormControl
         id='category'
-        isRequired
+        mb='3'
        >
         <FormLabel>Category</FormLabel>
         <Select
+         placeholder='Select Option'
          value={category}
          onChange={(e) => setCategory(e.target.value)}
         >

@@ -32,9 +32,16 @@ const ProductScreen = () => {
 	const [qty, setQty] = useState(1);
 	const [rating, setRating] = useState(0);
 	const [comment, setComment] = useState('');
+	// const [image, setImage] = useState('')
 
 	const productDetails = useSelector((state) => state.productDetails);
 	const { loading, error, product } = productDetails;
+
+	// const fetchImage = async () => {
+	// 	const data = await `/${product.image}`
+	// 	console.log(data);
+	// 	setImage(data);
+	// }
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
@@ -50,7 +57,11 @@ const ProductScreen = () => {
 			dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
 		}
 		dispatch(listProductDetails(id));
+
+		// fetchImage();
 	}, [id, dispatch, successReview]);
+
+
 
 	const addToCartHandler = () => {
 		navigate(`/cart/${id}?qty=${qty}`);
@@ -250,7 +261,7 @@ const ProductScreen = () => {
 											placeholder='Select Option'
 											value={rating}
 											onChange={(e) => setRating(e.target.value)}
-										>						
+										>
 											<option value='1'>1 - Poor</option>
 											<option value='2'>2 - Okay</option>
 											<option value='3'>3 - Good</option>

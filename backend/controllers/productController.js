@@ -72,7 +72,7 @@ const createProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
  const { name, price, image, brand, category, countInStock, description, isFeatured } =
   req.body;
-
+  
  const product = await Product.findById(req.params.id);
 
  if (product) {

@@ -27,6 +27,7 @@ const ProductDisplayScreen = ({ category }) => {
 
  const productList = useSelector((state) => state.productList);
  let { loading, error, products } = productList;
+ console.log(products);
 
  products = products.filter((product) => product.category === category);
  console.log(products);

@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import colors from "colors";
 import connectDB from "./config/db.js";
-import products from "./data/products.js";
+import products from "./data/newData.js";
 import users from "./data/users.js";
 import User from "./models/userModel.js";
 import Product from "./models/productModel.js";
@@ -14,15 +14,15 @@ connectDB();
 
 const importData = async () => {
  try {
-  await Product.deleteMany();
-  await Order.deleteMany();
-  await User.deleteMany();
+  // await Product.deleteMany();
+  // await Order.deleteMany();
+  // await User.deleteMany();
 
-  const userCreated = await User.insertMany(users);
-  const adminId = userCreated[0]._id;
+  const userCreated = await User.findById('');
+  // const adminId = userCreated[0]._id;
   
   const sampleProduct = products.map((product) => {
-   return {...product, user:adminId};
+   return {...product, user:userCreated};
   });
 
   await Product.insertMany(sampleProduct);
@@ -37,8 +37,8 @@ const importData = async () => {
 
 const destroyData = async () => {
  try {
-  await Product.deleteMany();
-  await Order.deleteMany();
+  // await Product.deleteMany();
+  // await Order.deleteMany();
   await User.deleteMany();
 
   console.log('Data Destroyed'.red.inverse);

@@ -58,7 +58,7 @@ const Header = () => {
      to='/'
      _hover={{ color: 'whiteAlpha.900', textDecoration: 'none' }}
     >
-     Rst Store
+    Hoodie Hub
     </Link>
    </Heading>
    <Box
