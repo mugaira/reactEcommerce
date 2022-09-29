@@ -37,7 +37,7 @@ export const HomeBannerOne = () => {
      as="h2"
      fontSize={{ lg: "3rem", md: "2rem", base: "2rem" }}
      fontWeight="bold"
-     textShadow="1px 1px #ff0000"
+     textShadow="1px 1px black"
     >
      New Clothes, <br />
      New Passion. 
