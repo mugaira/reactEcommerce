@@ -40,7 +40,7 @@ To run this project, you will need to add the following environment variables to
 
 ## Installation
 
-Clone to the  ShopEasy-Reat repository and run the following commands
+Clone to the reactEcommerce repository and run the following commands
 
 ```bash
   git clone https://github.com/mugaira/reactEcommerce.git
